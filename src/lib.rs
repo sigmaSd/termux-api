@@ -1,5 +1,5 @@
 // NOTE: maybe its better to move wasi to its own crate.
-// #[cfg(all(target_arch = "wasm32", target_os = "wasi"))]
+#[cfg(all(target_arch = "wasm32", target_os = "wasi"))]
 mod wasi;
 
 use serde::{Deserialize, Serialize};
