@@ -29,7 +29,7 @@ macro_rules! spawn {
     };
 }
 
-pub mod battery {
+pub mod battery_status {
     //https://github.com/termux/termux-api/blob/master/app/src/main/java/com/termux/api/apis/BatteryStatusAPI.java
     use super::*;
 
@@ -79,15 +79,13 @@ pub mod battery {
         #[serde(untagged)]
         Integer(String),
     }
-
-    pub fn status() -> Result<Status> {
-        spawn!(@output @json "termux-battery-status")
-    }
+}
+pub fn battery_status() -> Result<battery_status::Status> {
+    spawn!(@output @json "termux-battery-status")
 }
 
 pub mod brightness {
     //https://github.com/termux/termux-api/blob/master/app/src/main/java/com/termux/api/apis/BrightnessAPI.java
-    use super::*;
     pub enum Value {
         Auto,
         Integer(usize),
@@ -100,10 +98,9 @@ pub mod brightness {
             }
         }
     }
-
-    pub fn brightness(value: &Value) -> Result<()> {
-        spawn!("termux-brightness", value.to_string())
-    }
+}
+pub fn brightness(value: &brightness::Value) -> Result<()> {
+    spawn!("termux-brightness", value.to_string())
 }
 
 pub mod camera_info {
@@ -187,10 +184,9 @@ pub mod camera_info {
         YuvReprocessing,
         Integer(isize),
     }
-
-    pub fn camera_info() -> Result<Vec<Info>> {
-        spawn!(@output @json "termux-camera-info")
-    }
+}
+pub fn camera_info() -> Result<Vec<camera_info::Info>> {
+    spawn!(@output @json "termux-camera-info")
 }
 
 pub fn camera_photo(output_file: &str, camera_id: Option<usize>) -> Result<()> {
