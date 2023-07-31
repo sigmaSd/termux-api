@@ -1,5 +1,8 @@
 # Termux Api
 
-Rust library and deno module (using rust wasi bindings) for termux apis.
+Rust library for termux apis (+ exposed WASI api).
 
-**WIP**
+
+## TODO
+
+Implement missing apis, references: https://wiki.termux.com/wiki/Termux:API https://github.com/termux/termux-api/tree/master/app/src/main/java/com/termux/api/apis
