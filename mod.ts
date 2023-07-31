@@ -9,7 +9,7 @@ interface Exports {
 const context = new Context({});
 
 // TODO: figure something nicer for the end user
-//       maybe inlie the wasm file, or use the js bindings
+//       maybe inlie the wasm file, or transpile wasm -> js
 //       so the user don't need to have another file
 const cargoTargetDir = Deno.env.get("CARGO_TARGET_DIR") || "target";
 const { instance } = await WebAssembly.instantiate(
