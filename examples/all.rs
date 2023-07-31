@@ -1,5 +1,5 @@
-use termux_api::battery_status;
+use termux_api::battery;
 
 fn main() {
-    dbg!(battery_status().unwrap());
+    dbg!(battery::status().unwrap());
 }
