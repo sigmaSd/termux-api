@@ -18,6 +18,11 @@ macro_rules! spawn {
         .map(|_| {})
     };
     (@output $api: expr) => {
+         Ok(String::from_utf8(
+            std::process::Command::new($api).output()?.stdout,
+         )?)
+    };
+    (@output @json $api: expr) => {
         Ok(serde_json::from_slice(
             &std::process::Command::new($api).output()?.stdout,
         )?)
@@ -76,7 +81,7 @@ pub mod battery {
     }
 
     pub fn status() -> Result<Status> {
-        spawn!(@output "termux-battery-status")
+        spawn!(@output @json "termux-battery-status")
     }
 }
 
@@ -184,7 +189,7 @@ pub mod camera_info {
     }
 
     pub fn camera_info() -> Result<Vec<Info>> {
-        spawn!(@output "termux-camera-info")
+        spawn!(@output @json "termux-camera-info")
     }
 }
 
@@ -195,4 +200,12 @@ pub fn camera_photo(output_file: &str, camera_id: Option<usize>) -> Result<()> {
         &camera_id.unwrap_or(0).to_string(),
         output_file
     )
+}
+
+pub fn clipboard_get() -> Result<String> {
+    spawn!(@output "termux-clipboard-get")
+}
+
+pub fn clipboard_set(value: &str) -> Result<()> {
+    spawn!("termux-clipboard-set", value)
 }
