@@ -64,3 +64,27 @@ pub mod battery {
         )?)
     }
 }
+
+pub mod brightness {
+    use super::*;
+    pub enum Value {
+        Auto,
+        Integer(usize),
+    }
+    impl std::fmt::Display for Value {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            match self {
+                Self::Auto => f.write_str("auto"),
+                Self::Integer(int) => f.write_str(&int.to_string()),
+            }
+        }
+    }
+
+    pub fn brightness(value: &Value) -> Result<()> {
+        Ok(std::process::Command::new("termux-brightness")
+            .arg(value.to_string())
+            .spawn()?
+            .wait()?)
+        .map(|_| {})
+    }
+}
