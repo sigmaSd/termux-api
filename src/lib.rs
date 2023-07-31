@@ -1,3 +1,4 @@
+#![allow(clippy::missing_errors_doc, clippy::wildcard_imports)]
 // NOTE: maybe its better to move wasi to its own crate.
 #[cfg(all(target_arch = "wasm32", target_os = "wasi"))]
 mod wasi;
@@ -87,5 +88,96 @@ pub mod brightness {
             .spawn()?
             .wait()?)
         .map(|_| {})
+    }
+}
+
+pub mod camera_info {
+    use super::*;
+
+    #[derive(Serialize, Deserialize, Debug)]
+    pub struct Info {
+        id: String,
+        facing: Facing,
+        jpeg_output_sizes: Vec<JsonOutputSize>,
+        focal_lengths: Vec<f32>,
+        auto_exposure_modes: Vec<FlashModeValue>,
+        physical_size: PhysicalSize,
+        capabilities: Vec<Capability>,
+    }
+
+    #[derive(Serialize, Deserialize, Debug)]
+    enum Facing {
+        #[serde(rename = "front")]
+        Front,
+        #[serde(rename = "back")]
+        Back,
+        #[serde(untagged)]
+        Other(String),
+    }
+
+    #[derive(Serialize, Deserialize, Debug)]
+    pub struct JsonOutputSize {
+        width: usize,
+        height: usize,
+    }
+
+    #[derive(Serialize, Deserialize, Debug)]
+    enum FlashModeValue {
+        #[serde(rename = "CONTROL_AE_MODE_OFF")]
+        ControlAeModeOff,
+        #[serde(rename = "CONTROL_AE_MODE_ON")]
+        ControlAeModeOn,
+        #[serde(rename = "CONTROL_AE_MODE_ON_ALWAYS_FLASH")]
+        ControlAeModeOnAlwaysFlash,
+        #[serde(rename = "CONTROL_AE_MODE_ON_AUTO_FLASH")]
+        ControlAeModeOnAutoFlash,
+        #[serde(rename = "CONTROL_AE_MODE_ON_EXTERNAL_FLASH")]
+        ControlAeModeOnExternalFlash,
+        #[serde(untagged)]
+        Integer(isize),
+    }
+
+    #[derive(Serialize, Deserialize, Debug)]
+    struct PhysicalSize {
+        width: f32,
+        height: f32,
+    }
+    #[derive(Serialize, Deserialize, Debug)]
+    enum Capability {
+        #[serde(rename = "backward_compatible")]
+        BackwardCompatible,
+        #[serde(rename = "burst_capture")]
+        BurstCapture,
+        #[serde(rename = "constrained_high_speed_video")]
+        ConstrainedHighSpeedVideo,
+        #[serde(rename = "depth_output")]
+        DepthOutput,
+        #[serde(rename = "logical_multi_camera")]
+        LogicalMultiCamera,
+        #[serde(rename = "manual_post_processing")]
+        ManualPostProcessing,
+        #[serde(rename = "manual_sensor")]
+        ManualSensor,
+        #[serde(rename = "monochrome")]
+        Monochrome,
+        #[serde(rename = "motion_tracking")]
+        MotionTracking,
+        #[serde(rename = "private_reprocessing")]
+        PrivateReprocessing,
+        #[serde(rename = "raw")]
+        Raw,
+        #[serde(rename = "read_sensor_settings")]
+        ReadSensorSettings,
+        #[serde(rename = "yuv_reprocessing")]
+        YuvReprocessing,
+        Integer(isize),
+    }
+
+    pub fn camera_info() -> Result<Vec<Info>> {
+        Ok(serde_json::from_slice(
+            &std::process::Command::new("termux-camera-info")
+                .output()?
+                .stdout,
+        )?)
     }
 }
