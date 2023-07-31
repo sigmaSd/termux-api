@@ -6,6 +6,24 @@ mod wasi;
 use serde::{Deserialize, Serialize};
 pub type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 
+macro_rules! spawn {
+    ($api: expr) => {
+        Ok(std::process::Command::new($api).spawn()?.wait()?).map(|_| {})
+    };
+    ($api: expr, $($arg: expr),*) => {
+        Ok(std::process::Command::new($api)
+            .args(&[$($arg),*])
+            .spawn()?
+            .wait()?)
+        .map(|_| {})
+    };
+    (@output $api: expr) => {
+        Ok(serde_json::from_slice(
+            &std::process::Command::new($api).output()?.stdout,
+        )?)
+    };
+}
+
 pub mod battery {
     //https://github.com/termux/termux-api/blob/master/app/src/main/java/com/termux/api/apis/BatteryStatusAPI.java
     use super::*;
@@ -58,11 +76,7 @@ pub mod battery {
     }
 
     pub fn status() -> Result<Status> {
-        Ok(serde_json::from_slice(
-            &std::process::Command::new("termux-battery-status")
-                .output()?
-                .stdout,
-        )?)
+        spawn!(@output "termux-battery-status")
     }
 }
 
@@ -83,11 +97,7 @@ pub mod brightness {
     }
 
     pub fn brightness(value: &Value) -> Result<()> {
-        Ok(std::process::Command::new("termux-brightness")
-            .arg(value.to_string())
-            .spawn()?
-            .wait()?)
-        .map(|_| {})
+        spawn!("termux-brightness", value.to_string())
     }
 }
 
@@ -174,10 +184,15 @@ pub mod camera_info {
     }
 
     pub fn camera_info() -> Result<Vec<Info>> {
-        Ok(serde_json::from_slice(
-            &std::process::Command::new("termux-camera-info")
-                .output()?
-                .stdout,
-        )?)
+        spawn!(@output "termux-camera-info")
     }
+}
+
+pub fn camera_photo(output_file: &str, camera_id: Option<usize>) -> Result<()> {
+    spawn!(
+        "termux-camera-photo",
+        "-c",
+        &camera_id.unwrap_or(0).to_string(),
+        output_file
+    )
 }
