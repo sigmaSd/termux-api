@@ -8,25 +8,31 @@ pub type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 
 macro_rules! spawn {
     ($api: expr) => {
-        Ok(std::process::Command::new($api).spawn()?.wait()?).map(|_| {})
+        Ok(spawn!(@internal_spawn spawn!(@internal_new $api)))
     };
     ($api: expr, $($arg: expr),*) => {
-        Ok(std::process::Command::new($api)
-            .args(&[$($arg),*])
-            .spawn()?
-            .wait()?)
-        .map(|_| {})
+        Ok(spawn!(@internal_spawn spawn!(@internal_new $api).args(&[$($arg),*])))
     };
     (@output $api: expr) => {
          Ok(String::from_utf8(
-            std::process::Command::new($api).output()?.stdout,
+           spawn!(@internal_output spawn!(@internal_new $api))
          )?)
     };
     (@output @json $api: expr) => {
         Ok(serde_json::from_slice(
-            &std::process::Command::new($api).output()?.stdout,
+            &spawn!(@internal_output spawn!(@internal_new $api))
         )?)
     };
+    // internal captures
+    (@internal_new $api: expr) => {
+        std::process::Command::new($api)
+    };
+    (@internal_spawn $cmd: expr) => {
+        $cmd.spawn()?.wait().map(|_|{})?
+    };
+    (@internal_output $cmd: expr) => {
+        $cmd.output()?.stdout
+    }
 }
 
 pub mod battery_status {
