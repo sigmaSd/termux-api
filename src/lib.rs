@@ -66,6 +66,7 @@ pub mod battery {
 }
 
 pub mod brightness {
+    //https://github.com/termux/termux-api/blob/master/app/src/main/java/com/termux/api/apis/BrightnessAPI.java
     use super::*;
     pub enum Value {
         Auto,
