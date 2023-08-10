@@ -28,7 +28,7 @@ jobs:
       - run: if git diff --name-only | grep deno_api/build.ts; then echo "wasm file is outdated, run deno_api/build.ts to update."; exit 1; fi
         
       - name: Setup Rust
-      - uses: dtolnay/rust-toolchain@stable
+        uses: dtolnay/rust-toolchain@stable
         with:
           targets: "wasm32-wasi"
           
