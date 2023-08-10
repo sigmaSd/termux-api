@@ -1,0 +1,33 @@
+name: ci
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup repo
+        uses: actions/checkout@v3
+
+      - name: Setup Deno
+        # uses: denoland/setup-deno@v1
+        uses: denoland/setup-deno@61fe2df320078202e33d7d5ad347e7dcfa0e8f31  # v1.1.2
+        with:
+          deno-version: v1.x
+          
+      - run: deno fmt --check
+      - run: deno run -A deno_api/build.ts
+      - run: if git diff --name-only | grep deno_api/build.ts; then echo "wasm file is outdated, run deno_api/build.ts to update."; exit 1; fi
+        
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo fmt --check
+      - run: cargo build
+      - run: cargo clippy
