@@ -42,3 +42,42 @@ This script does the following:
 
 Implement missing apis, references: https://wiki.termux.com/wiki/Termux:API
 https://github.com/termux/termux-api/tree/master/app/src/main/java/com/termux/api/apis
+
+** progress: **
+
+- [x] BatteryStatusAPI
+- [x] BrightnessAPI
+- [ ] CallLogAPI
+- [x] CameraInfoAPI
+- [x] CameraPhotoAPI
+- [x] ClipboardAPI
+- [ ] ContactListAPI
+- [ ] DialogAPI
+- [ ] DownloadAPI
+- [ ] FingerprintAPI
+- [ ] InfraredAPI
+- [ ] JobSchedulerAPI
+- [ ] KeystoreAPI
+- [ ] LocationAPI
+- [ ] MediaPlayerAPI
+- [ ] MediaScannerAPI
+- [ ] MicRecorderAPI
+- [ ] NfcAPI
+- [ ] NotificationAPI
+- [ ] NotificationListAPI
+- [ ] SAFAPI
+- [ ] SensorAPI
+- [ ] ShareAPI
+- [ ] SmsInboxAPI
+- [ ] SmsSendAPI
+- [ ] SpeechToTextAPI
+- [ ] StorageGetAPI
+- [ ] TelephonyAPI
+- [ ] TextToSpeechAPI
+- [ ] ToastAPI
+- [ ] TorchAPI
+- [ ] UsbAPI
+- [ ] VibrateAPI
+- [ ] VolumeAPI
+- [ ] WallpaperAPI
+- [ ] WifiAPI
