@@ -43,7 +43,7 @@ This script does the following:
 Implement missing apis, references: https://wiki.termux.com/wiki/Termux:API
 https://github.com/termux/termux-api/tree/master/app/src/main/java/com/termux/api/apis
 
-** progress: **
+**progress:**
 
 - [x] BatteryStatusAPI
 - [x] BrightnessAPI
