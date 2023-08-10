@@ -2,12 +2,25 @@
 
 Rust library for termux apis (+ exposed WASI api).
 
+## Usage
+
+```rs
+use termux_api_rs::*;
+
+fn main() {
+    dbg!(battery_status().unwrap());
+}
+```
+
+To compile for android, the easiest way is to use
+https://github.com/bbqsrc/cargo-ndk
+
 ## Drive Test
 
 Run `deno run -A run_android.ts` to test the example termux-all on andorid
 
 It requires an android phone/emulator setup with termux/termux-api installed +
-https://github.com/bbqsrc/cargo-ndk
+cargo-ndk
 
 This script does the following:
 
