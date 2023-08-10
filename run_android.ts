@@ -56,7 +56,7 @@ async function write(
 
 async function buildTermuxAll() {
   if (await $.which("cargo-ndk") === undefined) {
-    throw "test requires cargo-ndk to be installed";
+    throw "script requires cargo-ndk to be installed and configured.";
   }
   await $`cargo ndk -t x86_64  build --release --example termux-all`;
 }
