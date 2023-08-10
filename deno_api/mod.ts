@@ -1,4 +1,6 @@
 import Context from "https://deno.land/std@0.190.0/wasi/snapshot_preview1.ts";
+import { wasmData } from "./termux_wasm.js";
+import { base64 } from "../deps.ts";
 
 interface Exports {
   memory: WebAssembly.Memory;
@@ -8,14 +10,8 @@ interface Exports {
 
 const context = new Context({});
 
-// TODO: figure something nicer for the end user
-//       maybe inlie the wasm file, or transpile wasm -> js
-//       so the user don't need to have another file
-const cargoTargetDir = Deno.env.get("CARGO_TARGET_DIR") || "target";
 const { instance } = await WebAssembly.instantiate(
-  await Deno.readFile(
-    cargoTargetDir + "/wasm32-wasi/release/termux_api.wasm",
-  ),
+  base64.decode(wasmData),
   {
     "wasi_snapshot_preview1": context.exports,
   },
@@ -25,7 +21,7 @@ const exports = instance.exports as unknown as Exports;
 
 const memory = new Uint8Array(exports.memory.buffer);
 
-function battery_status() {
+export function battery_status() {
   const ptr = exports.battery_status();
   if (ptr === 0) throw "battery_status failed";
   const nul = memory.slice(ptr).findIndex((b) => b === 0);
@@ -36,4 +32,6 @@ function battery_status() {
   );
 }
 
-console.log(battery_status());
+if (import.meta.main) {
+  console.log(battery_status());
+}
