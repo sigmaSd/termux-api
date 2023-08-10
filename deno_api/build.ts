@@ -13,3 +13,6 @@ Deno.writeTextFileSync(
   "./deno_api/termux_wasm.js",
   `export const wasmData = "${base64.encode(data)}";`,
 );
+
+await new Deno.Command("deno", { args: ["fmt", "./deno_api/termux_wasm.js"] })
+  .spawn().status;
