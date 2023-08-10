@@ -1,6 +1,6 @@
 import Context from "https://deno.land/std@0.190.0/wasi/snapshot_preview1.ts";
 import { wasmData } from "./termux_wasm.js";
-import { base64 } from "../deps.ts";
+import { base64 } from "./deps.ts";
 
 interface Exports {
   memory: WebAssembly.Memory;

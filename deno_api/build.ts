@@ -1,4 +1,4 @@
-import { base64 } from "../deps.ts";
+import { base64 } from "./deps.ts";
 
 await new Deno.Command("cargo", {
   args: ["build", "--release", "--target", "wasm32-wasi"],
@@ -11,8 +11,6 @@ const data = Deno.readFileSync(
 
 Deno.writeTextFileSync(
   "./deno_api/termux_wasm.js",
-  `export const wasmData = "${base64.encode(data)}";`,
+  `export const wasmData =
+  "${base64.encode(data)}";\n`,
 );
-
-await new Deno.Command("deno", { args: ["fmt", "./deno_api/termux_wasm.js"] })
-  .spawn().status;
