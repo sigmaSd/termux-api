@@ -63,5 +63,17 @@ async function buildTermuxAll() {
 
 async function pushBinToAndroid() {
   const cargoTargetDir = Deno.env.get("CARGO_TARGET_DIR") || "target";
-  await $`adb push ${cargoTargetDir}/x86_64-linux-android/release/examples/termux-all /sdcard/termux-all`;
+  let archDir = "";
+  switch (Deno.env.get("ARCH") ?? "x86_64") {
+    case "x86_64":
+      archDir = "x86_64-linux-android";
+      break;
+    case "armeabi-v7a":
+      archDir = "armv7-linux-androideabi";
+      break;
+    case "arm64-v8a":
+      archDir = "aarch64-linux-android";
+      break;
+  }
+  await $`adb push ${cargoTargetDir}/${archDir}/release/examples/termux-all /sdcard/termux-all`;
 }
