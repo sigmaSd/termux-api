@@ -1,4 +1,4 @@
-use termux_api::*;
+use termux_api_rs::*;
 
 fn main() {
     dbg!(battery_status().unwrap());

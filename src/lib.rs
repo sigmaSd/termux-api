@@ -130,7 +130,7 @@ pub mod camera_info {
         #[serde(rename = "back")]
         Back,
         #[serde(untagged)]
-        Other(String),
+        Other(usize),
     }
 
     #[derive(Serialize, Deserialize, Debug)]
