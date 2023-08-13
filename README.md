@@ -1,6 +1,6 @@
 # Termux Api
 
-Rust library for termux apis (+ exposed WASI api).
+Rust wrapper for termux apis.
 
 ## Usage
 
