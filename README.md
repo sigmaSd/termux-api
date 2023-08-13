@@ -15,13 +15,6 @@ fn main() {
 To compile for android, the easiest way is to use
 https://github.com/bbqsrc/cargo-ndk
 
-## Wasi
-
-Wasi bindings are provided, deno wrapper that consumes those bindings is also
-provided.
-
-To update the deno bindings run `deno run -A deno_api/build.ts`
-
 ## Drive Test
 
 Run `deno run -A run_android.ts` to test the example termux-all on andorid
@@ -81,3 +74,8 @@ https://github.com/termux/termux-api/tree/master/app/src/main/java/com/termux/ap
 - [ ] VolumeAPI
 - [ ] WallpaperAPI
 - [ ] WifiAPI
+
+
+## Wasi
+
+I was initially testing wasi, but turns out std::process::Command is not supported unless the subprocess itself is compiled to wasm. 
