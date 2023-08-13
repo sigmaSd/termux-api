@@ -75,7 +75,7 @@ https://github.com/termux/termux-api/tree/master/app/src/main/java/com/termux/ap
 - [ ] WallpaperAPI
 - [ ] WifiAPI
 
-
 ## Wasi
 
-I was initially testing wasi, but turns out std::process::Command is not supported unless the subprocess itself is compiled to wasm. 
+I was initially testing wasi, but turns out std::process::Command is not
+supported unless the subprocess itself is compiled to wasm.
